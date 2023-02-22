@@ -1,0 +1,6 @@
+pyaudio
+SpeechRecognition
+pyttsx3
+openai
+ipykernel
+config
