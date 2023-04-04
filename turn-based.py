@@ -4,7 +4,7 @@ import openai
 import time
 import config
 
-openai.api_key = config.api_key # set api key
+openai.api_key = config.openai_key # set api key
 
 r = sr.Recognizer() # recognizer instance
 m = sr.Microphone() # audio input instance

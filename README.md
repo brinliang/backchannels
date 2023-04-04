@@ -13,17 +13,28 @@ conda install pip
 pip install -r requirements.txt
 ```
 
-Get your API key from OpenAI from https://platform.openai.com/account/api-keys.
+Get your API key from OpenAI (https://platform.openai.com/account/api-keys).
 Copy the API key and paste it into the command
 ```
-echo "api_key = 'YOUR_API_KEY_HERE'" > config.py
+echo "openai_key = 'YOUR_API_KEY_HERE'" > config.py
 ```
 
 The ipython notebook contains implementation details.
-To run the demo, run
+To run the turn based demo, run
 ```
-python3 backchannels.py
+python turn-based.py
 ```
+
+To run the real time demo, get an API key from AssemblyAI (https://www.assemblyai.com/app).
+Copy the API key and paste it into the command
+```
+echo "assembly_key = 'YOUR_API_KEY_HERE'" >> config.py
+```
+Then run
+```
+python real-time.py
+```
+
 
 # Demo
 
