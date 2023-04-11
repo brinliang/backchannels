@@ -5,3 +5,5 @@ openai
 ipykernel
 config
 websockets
+aioconsole
+gtts
