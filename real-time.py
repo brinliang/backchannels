@@ -11,9 +11,12 @@ import os
 
 # prompt to use for gpt responses
 prompt = 'respond with a verbal backchannel to "{}"'
+
 # toggle true for automatic and false for manual backchanneling timing
 pause_activated = True
-FRAMES_PER_BUFFER = 1600  # change this to change response update rate
+
+# change this to change response update rate
+FRAMES_PER_BUFFER = 1600
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -40,15 +43,19 @@ response = ''
 async def generate_response():
     while True:
         try:
+            # generate response from gpt3
             request = await openai.Completion.acreate(
                 model='text-davinci-003',
                 prompt=prompt.format(transcript),
-                max_tokens=10,
+                max_tokens=256,
             )
+            # update response
             global response
             response = request['choices'][0]['text'].strip()
             print('transcript: ', transcript)
             print('response: ', response)
+
+            # create audio response
             tts = gTTS(text=response, lang='en')
             tts.save('response.mp3')
 
@@ -59,6 +66,7 @@ async def generate_response():
 
 
 async def play_response():
+    # press any key to play a response prepared at a given moment
     if not pause_activated:
         while True:
             input = await ainput('')
@@ -72,6 +80,7 @@ async def send_receive():
 
     print(f'Connecting websocket to url ${URL}')
 
+    # connect to assembly endpoint with websockets
     async with websockets.connect(
             URL,
             extra_headers=(("Authorization", config.assembly_key),),
@@ -86,6 +95,7 @@ async def send_receive():
         print(session_begins)
         print("Sending messages ...")
 
+        # send chunk of audio to endpoint
         async def send():
             while True:
                 try:
@@ -107,6 +117,7 @@ async def send_receive():
 
             return True
 
+        # receive transcription
         async def receive():
 
             while True:
@@ -114,9 +125,10 @@ async def send_receive():
                     assembly = await _ws.recv()
                     global transcript
 
-                    if pause_activated and json.loads(assembly)['message_type'] == 'FinalTranscript' and os.path.exists('response.mp3'):
-                        os.system('afplay response.mp3')
-                        os.remove('response.mp3')
+                    # play an audio response
+                    if pause_activated and json.loads(assembly)['message_type'] == 'FinalTranscript' and os.path.exists('response.wav'):
+                        os.system('afplay response.wav')
+                        os.remove('response.wav')
                         global response
                         response = ''
                         transcript = ''
@@ -135,6 +147,7 @@ async def send_receive():
         send_result, receive_result = await asyncio.gather(send(), receive())
 
 
+# run functions asynchronously 
 loop = asyncio.get_event_loop()
 loop.create_task(generate_response())
 loop.create_task(send_receive())

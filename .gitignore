@@ -3,3 +3,4 @@ __pycache__
 config.py
 .DS_Store
 response.mp3
+tests
