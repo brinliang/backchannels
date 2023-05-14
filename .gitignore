@@ -2,5 +2,6 @@ __pycache__
 .ipynb_checkpoints
 config.py
 .DS_Store
-response.mp3
-tests
+response.wav
+tests1
+tests2
