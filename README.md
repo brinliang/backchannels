@@ -34,8 +34,3 @@ Then run
 ```
 python real-time.py
 ```
-
-
-# Demo
-
-https://user-images.githubusercontent.com/112737926/220530568-43194519-43b0-4283-8e79-77aff332e7e7.mp4
